@@ -45,4 +45,8 @@ public class ProductService {
             return false;
         }
     }
+
+    public List<Product> searchByName(String word){
+        return productRepository.searchByWord(word);
+    }
 }

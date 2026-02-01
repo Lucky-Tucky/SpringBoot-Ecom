@@ -78,4 +78,11 @@ public class ProductController {
             return new ResponseEntity<>("Error in Deletion", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/product/search/{word}")
+    public ResponseEntity<?> getProductBySearch(@PathVariable String word){
+        List<Product> products = productService.searchByName(word);
+
+        return new ResponseEntity<>(products,HttpStatus.OK);
+    }
 }
