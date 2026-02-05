@@ -26,9 +26,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<OrderItemResponse>> getAllOrders(){
+    public ResponseEntity<List<OrderResponse>> getAllOrders(){
 
-         List<OrderItemResponse> orderItemResponse = orderService.getAllOrders();
-         return new ResponseEntity<>(orderItemResponse , HttpStatus.OK);
+         List<OrderResponse> orderResponses = orderService.getAllOrders();
+         return new ResponseEntity<>(orderResponses , HttpStatus.OK);
     }
 }

@@ -9,6 +9,7 @@ import com.lucky.springEcom.Models.dto.OrderRequest;
 import com.lucky.springEcom.Models.dto.OrderResponse;
 import com.lucky.springEcom.Repository.OrderRepository;
 import com.lucky.springEcom.Repository.ProductRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Transactional
     public OrderResponse placeOrder(OrderRequest request){
 
         Order order = new Order();
@@ -45,8 +47,9 @@ public class OrderService {
 
            int quantity = item.quantity();
 
-           if(product.getStockQuantity()-quantity>0){
+           if(product.getStockQuantity()-quantity >= 0){
                 product.setStockQuantity(product.getStockQuantity()-quantity);
+                productRepository.save(product);
            }else{
                throw new RuntimeException("Stock Quantity is not Valid!");
            }
@@ -72,8 +75,13 @@ public class OrderService {
 
     }
 
-    public List<OrderItemResponse> getAllOrders() {
-        return List.of(null);
+    public List<OrderResponse> getAllOrders() {
+
+        List<Order> orders = orderRepository.findAll();
+
+        return orders.stream()
+                .map(this::MaptoOrderResponse)
+                .toList();
     }
 
 
