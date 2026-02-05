@@ -22,7 +22,7 @@ public class Product {
     private String name;
     private String description;
     private String brand;
-    private BigDecimal price;
+    private long price;
     private String category;
 
     @JsonFormat(pattern = "dd-mm-yyyy")
