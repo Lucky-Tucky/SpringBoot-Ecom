@@ -12,19 +12,19 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/product")
 @CrossOrigin
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/products")
+    @GetMapping("")
     public ResponseEntity<List<Product>> getProducts(){
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Product> getProductById(@PathVariable int id){
 
         Product product = productService.getProductById(id);
@@ -36,7 +36,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/product/{id}/image")
+    @GetMapping("/get/{id}/image")
     public ResponseEntity<?> getImageData(@PathVariable int id){
         Product product = productService.getProductById(id);
         if(product !=null ){
@@ -46,7 +46,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/product")
+    @PostMapping("")
     public ResponseEntity<?> addProduct(@RequestPart Product product , @RequestPart MultipartFile image){
 
         try{
@@ -57,7 +57,7 @@ public class ProductController {
     }
 
 
-    @PutMapping("/product")
+    @PutMapping("")
     public ResponseEntity<String> updateProduct(@RequestPart Product product , @RequestPart MultipartFile image){
         try{
             productService.addOrUpdateProduct(product, image);
@@ -67,7 +67,7 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable int id){
 
         boolean success = productService.deleteProductById(id);
@@ -79,7 +79,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/search/{word}")
+    @GetMapping("/search/{word}")
     public ResponseEntity<?> getProductBySearch(@PathVariable String word){
         List<Product> products = productService.searchByName(word);
 

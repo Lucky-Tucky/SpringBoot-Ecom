@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/order")
 @CrossOrigin
 public class OrderController {
 
     private OrderService orderService;
 
-    @PostMapping("/order/place")
+    @PostMapping("/place")
     public ResponseEntity<OrderResponse> placeOrder(@RequestBody OrderRequest orderRequest){
 
         OrderResponse orderResponse = orderService.placeOrder(orderRequest);
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/orders")
+    @GetMapping("/getOrders")
     public ResponseEntity<List<OrderResponse>> getAllOrders(){
 
          List<OrderResponse> orderResponses = orderService.getAllOrders();
