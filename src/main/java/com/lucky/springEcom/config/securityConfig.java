@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +23,9 @@ public class securityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
@@ -41,14 +45,14 @@ public class securityConfig {
                 .authorizeHttpRequests(request->
                         request
                                 .requestMatchers("/api/order/**").authenticated()
-                                .requestMatchers(HttpMethod.POST, "/api/product/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/api/product/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/api/product/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/product/**").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/product/**").authenticated()
+                                .requestMatchers(HttpMethod.DELETE, "/api/product/**").authenticated()
                                 .anyRequest().permitAll()
                 )
-                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(sesion->
                         sesion.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter , UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
